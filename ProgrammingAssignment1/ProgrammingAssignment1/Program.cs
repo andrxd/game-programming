@@ -33,6 +33,16 @@ namespace ProgrammingAssignment1
 
             deltaY = point1Y - point2Y;
 
+            double distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+
+            double radians = Math.Atan2(deltaY, deltaX);
+            double angle = radians * (180 / Math.PI);
+
+            Console.WriteLine("Distance between the points: {0:0.000}", distance);
+            Console.WriteLine("Angle: {0:0.000}", angle);
+
+            Console.ReadLine();
+
 
         }
     }

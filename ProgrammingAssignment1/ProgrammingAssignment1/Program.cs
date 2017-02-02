@@ -29,13 +29,13 @@ namespace ProgrammingAssignment1
 
             float deltaX, deltaY;
 
-            deltaX = point1X - point2X;
+            deltaX = point2X - point1X;
 
-            deltaY = point1Y - point2Y;
+            deltaY = point2Y - point1Y;
 
             double distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
 
-            double radians = Math.Atan2(deltaY, deltaX);
+            double radians = Math.Atan2(deltaX, deltaY);
             double angle = radians * (180 / Math.PI);
 
             Console.WriteLine("Distance between the points: {0:0.000}", distance);

@@ -98,11 +98,12 @@ namespace ProgrammingAssignment3
 
                 // STUDENTS: Set outsideWindow to true if the rock is outside the window
 
-                if (drawRectangle.Left < 0)
+             
+                if (drawRectangle.Left > windowWidth)
                 {
                     outsideWindow = true;
                 }
-                else if (drawRectangle.Right > windowWidth)
+                else if (drawRectangle.Right < 0)
                 {
                     outsideWindow = true;
                 }

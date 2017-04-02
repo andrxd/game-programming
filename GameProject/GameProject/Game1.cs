@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Shapes;
+//using MonoGame.Extended.Shapes;
 using System;
 
 namespace GameProject
@@ -159,8 +159,8 @@ namespace GameProject
             // draw game objects
             burger.Draw(spriteBatch);
 
-            spriteBatch.DrawLine(new Vector2(0, GameConstants.WindowHeight / 2), new Vector2(GameConstants.WindowWidth, GameConstants.WindowHeight / 2), Color.Red,1f);
-            spriteBatch.DrawLine(new Vector2(GameConstants.WindowWidth / 2, GameConstants.WindowHeight), new Vector2(GameConstants.WindowWidth / 2, 0), Color.Black, 1f);
+            //spriteBatch.DrawLine(new Vector2(0, GameConstants.WindowHeight / 2), new Vector2(GameConstants.WindowWidth, GameConstants.WindowHeight / 2), Color.Red,1f);
+            //spriteBatch.DrawLine(new Vector2(GameConstants.WindowWidth / 2, GameConstants.WindowHeight), new Vector2(GameConstants.WindowWidth / 2, 0), Color.Black, 1f);
             //spriteBatch.DrawLine(new Vector2(GameConstants.WindowWidth / 2, GameConstants.WindowHeight), new Vector2(GameConstants.WindowWidth / 2, 0), Color.Red);
             //spriteBatch.DrawLine(new Vector2(0, GameConstants.WindowHeight / 2),new Vector2(GameConstants.WindowWidth,GameConstants.WindowHeight/2), Color.Red);
 
@@ -219,6 +219,7 @@ namespace GameProject
             
             int x = GetRandomLocation(GameConstants.SpawnBorderSize, GameConstants.WindowWidth - GameConstants.SpawnBorderSize*2);            
             int y = GetRandomLocation(GameConstants.SpawnBorderSize, GameConstants.WindowHeight - GameConstants.SpawnBorderSize*2);
+            
             // generate random velocity
             float speed = RandomNumberGenerator.NextFloat(GameConstants.BearSpeedRange);
             float angle = RandomNumberGenerator.NextFloat((float)Math.PI*2);
@@ -227,7 +228,12 @@ namespace GameProject
             Vector2 velocity = new Vector2(speed * (float)Math.Cos(angle) , speed * (float)Math.Sin(angle));
             TeddyBear newBear = new TeddyBear(Content, @"graphics\teddybear", x, y, velocity, null, null);
             // make sure we don't spawn into a collision
-
+            
+            while(!CollisionUtils.IsCollisionFree(newBear.CollisionRectangle, GetCollisionRectangles()))
+            {
+                newBear.X = GetRandomLocation(GameConstants.SpawnBorderSize, GameConstants.WindowWidth - GameConstants.SpawnBorderSize * 2);
+                newBear.Y = GetRandomLocation(GameConstants.SpawnBorderSize, GameConstants.WindowHeight - GameConstants.SpawnBorderSize * 2);
+            }
             // add new bear to list
             bears.Add(newBear);
         }

@@ -13,6 +13,7 @@ namespace GameProject
     /// </summary>
     public class Game1 : Game
     {
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -86,7 +87,9 @@ namespace GameProject
             // load sprite font
 
             // load projectile and explosion sprites
-
+            teddyBearProjectileSprite = Content.Load<Texture2D>(@"graphics\teddybearprojectile");
+            frenchFriesSprite = Content.Load<Texture2D>(@"graphics\frenchfries");
+            explosionSpriteStrip = Content.Load<Texture2D>(@"graphics\explosion");
             // add initial game objects
             burger = new Burger(Content, @"graphics\burger", GameConstants.WindowWidth / 2, GameConstants.WindowHeight - GameConstants.WindowHeight / 8, null);
             SpawnBear();
@@ -110,11 +113,11 @@ namespace GameProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            MouseState mouse = Mouse.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
             // get current mouse state and update burger
-
+            burger.Update(gameTime, mouse);
             // update other game objects
             foreach (TeddyBear bear in bears)
             {
@@ -194,7 +197,14 @@ namespace GameProject
         public static Texture2D GetProjectileSprite(ProjectileType type)
         {
             // replace with code to return correct projectile sprite based on projectile type
-            return frenchFriesSprite;
+            if (type == ProjectileType.FrenchFries)
+            {
+                return frenchFriesSprite;
+            }
+            else
+            {
+                return teddyBearProjectileSprite;
+            }
         }
 
         /// <summary>
@@ -203,7 +213,7 @@ namespace GameProject
         /// <param name="projectile">the projectile to add</param>
         public static void AddProjectile(Projectile projectile)
         {
-
+            projectiles.Add(projectile);
         }
 
         #endregion
@@ -216,20 +226,20 @@ namespace GameProject
         private void SpawnBear()
         {
             // generate random location
-            
-            int x = GetRandomLocation(GameConstants.SpawnBorderSize, GameConstants.WindowWidth - GameConstants.SpawnBorderSize*2);            
-            int y = GetRandomLocation(GameConstants.SpawnBorderSize, GameConstants.WindowHeight - GameConstants.SpawnBorderSize*2);
-            
+
+            int x = GetRandomLocation(GameConstants.SpawnBorderSize, GameConstants.WindowWidth - GameConstants.SpawnBorderSize * 2);
+            int y = GetRandomLocation(GameConstants.SpawnBorderSize, GameConstants.WindowHeight - GameConstants.SpawnBorderSize * 2);
+
             // generate random velocity
             float speed = RandomNumberGenerator.NextFloat(GameConstants.BearSpeedRange);
-            float angle = RandomNumberGenerator.NextFloat((float)Math.PI*2);
+            float angle = RandomNumberGenerator.NextFloat((float)Math.PI * 2);
             // create new bear
 
-            Vector2 velocity = new Vector2(speed * (float)Math.Cos(angle) , speed * (float)Math.Sin(angle));
+            Vector2 velocity = new Vector2(speed * (float)Math.Cos(angle), speed * (float)Math.Sin(angle));
             TeddyBear newBear = new TeddyBear(Content, @"graphics\teddybear", x, y, velocity, null, null);
             // make sure we don't spawn into a collision
-            
-            while(!CollisionUtils.IsCollisionFree(newBear.CollisionRectangle, GetCollisionRectangles()))
+
+            while (!CollisionUtils.IsCollisionFree(newBear.CollisionRectangle, GetCollisionRectangles()))
             {
                 newBear.X = GetRandomLocation(GameConstants.SpawnBorderSize, GameConstants.WindowWidth - GameConstants.SpawnBorderSize * 2);
                 newBear.Y = GetRandomLocation(GameConstants.SpawnBorderSize, GameConstants.WindowHeight - GameConstants.SpawnBorderSize * 2);

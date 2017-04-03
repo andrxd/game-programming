@@ -132,6 +132,15 @@ namespace GameProject
         /// <param name="gameTime">game time</param>
         public void Update(GameTime gameTime)
         {
+            elapsedShotMilliseconds += gameTime.ElapsedGameTime.Milliseconds;
+
+            if (elapsedShotMilliseconds >firingDelay)
+            {
+                elapsedShotMilliseconds = 0;
+                firingDelay = GetRandomFiringDelay();
+                Projectile teddyshot = new Projectile(ProjectileType.TeddyBear, Game1.GetProjectileSprite(ProjectileType.TeddyBear), (int)drawRectangle.Center.X, (int)drawRectangle.Y + GameConstants.TeddyBearProjectileOffset,-1*GetProjectileYVelocity());
+                Game1.AddProjectile(teddyshot);
+            }
             // move the teddy bear
             drawRectangle.X += (int)(velocity.X * gameTime.ElapsedGameTime.Milliseconds);
             drawRectangle.Y += (int)(velocity.Y * gameTime.ElapsedGameTime.Milliseconds);
